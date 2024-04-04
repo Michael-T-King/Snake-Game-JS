@@ -115,11 +115,9 @@ const countRestart = setInterval(() => {
     return true; // Столкновение с границей поля
   }
   for (let i = 0; i < snake.length; i++) {
-    setTimeout(()=>{
     if (x === snake[i].x && y === snake[i].y) {
       return true; // Столкновение с самой змейкой
     }
-  },40);
   }
   return false;
 }
