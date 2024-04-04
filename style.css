@@ -6,12 +6,12 @@
 
 body {
     background-color: #444;
-    overflow: hidden;
+   /* overflow: hidden;*/
 }
 
 .container {
     width: 1200px;
-    height: 100dvh;
+    height: 100%;
     display: flex;
     position: relative;
     margin: 0 auto;
