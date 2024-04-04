@@ -1,9 +1,8 @@
 
-  const boardSize = 40; // Размер игрового поля
+  const boardSize = 30; // Размер игрового поля
   const cellSize = 20; // Размер тайла
   let initialSnakeLength = 4; // Начальная длина змейки
-  let SnakeSpeed = 300; // Начальная скорость движения змейки (в миллисекундах)
-
+  let SnakeSpeed = 400; // Начальная скорость движения змейки (в миллисекундах)
   let snake = []; // Змейка
   let direction = "right"; // Направление движения змейки
   let food = {}; // Еда
@@ -21,9 +20,8 @@
   const counterText =document.querySelector('.counter__text');
   const  countdown = document.querySelector(".countdown");
   const btnStart = document.querySelector('.btn__start');
-
+  let pausePopup = document.querySelector('.pause__popup');
   
-
   // Создание игрового поля
 for(let row = 0; row <boardSize; row++){
   for(let col = 0; col < boardSize; col ++) {
@@ -34,7 +32,6 @@ for(let row = 0; row <boardSize; row++){
     gameField.appendChild(cell);
   }
 }
-
 const cells = document.getElementsByClassName("cell");
 function initGame() {
   snake = []; // Очищаем змейку
@@ -65,18 +62,18 @@ function initGame() {
   let btnPause = document.querySelector('.btn__pause');
   if(!isPaused){
     gameLoop = setInterval(moveSnake, SnakeSpeed);
-    //pausedTextItem.innerText = pausedText;
-     
+    //pausedTextItem.innerText = pausedText;    
   }
 function pause() {
-  let pausePopup = document.querySelector('.pause__popup');
+ 
   btnPause.addEventListener('click', (event) => {
     isPaused = !isPaused;
       // Дополнительные действия, если необходимо, когда игра приостановлена
-      if(!isPaused){
+      if(!isSettings && !isPaused){
         pausedText = 'Pause'; 
         gameLoop = setInterval(moveSnake, SnakeSpeed);
         pausePopup.classList.remove('show');
+        
       }
       else {
         pausedText = 'Resume';
@@ -90,11 +87,9 @@ pause();
 let Restart = document.querySelector('.btn__restart');
 Restart.addEventListener('click', (event) => {
   event.preventDefault(); // Предотвращение обновления страницы
-
 counter =0;
 score.textContent = counter;
 clearInterval(gameLoop);
-
 const countRestart = setInterval(() => {
   countdown.style.display = 'flex';
   counterText.innerText = timer-1;
@@ -112,16 +107,13 @@ const countRestart = setInterval(() => {
     countdown.style.display = 'none';
   }
 }, 1000);
-pause();
+//pause();
 });
-
-
  // Проверка столкновения с границей поля или самой змейкой
  function checkCollision(x, y) {
   if (x < 0 || x >= boardSize || y < 0 || y >= boardSize) {
     return true; // Столкновение с границей поля
   }
-
   for (let i = 0; i < snake.length; i++) {
     setTimeout(()=>{
     if (x === snake[i].x && y === snake[i].y) {
@@ -129,7 +121,6 @@ pause();
     }
   },40);
   }
-
   return false;
 }
 function moveSnake() {
@@ -146,14 +137,12 @@ function moveSnake() {
   } else if (direction === "right") {
     newHead_X++;
   }
-
   // Проверяем столкновение змейки с границей поля или самой собой
   if (checkCollision(newHead_X, newHead_Y)) {
     clearInterval(gameLoop);
     alert("Game Over!                " + "Your score is: " + counter);
     return;
   }
-
   // Проверяем, попала ли змейка на еду
   if (newHead_X === food.x && newHead_Y === food.y) {
     // Увеличиваем длину змейки
@@ -172,7 +161,6 @@ function moveSnake() {
       cells[foodIndex].classList.remove("food");
     /* snake.unshift({ x: newHead_X, y: newHead_Y });*/
     }
-
     // Генерируем новую еду
     generateFood();
     drawSnake();
@@ -181,10 +169,8 @@ function moveSnake() {
     snake.unshift({ x: newHead_X, y: newHead_Y });
     snake.pop();
   }
-
   drawSnake();
 }
-
    // Обработка нажатия клавиш
   let isChangingDirection = false;
   
@@ -215,65 +201,69 @@ function moveSnake() {
   }
 let settingsPopup = document.querySelector('.settings__popup');
 let buttonSettings = document.querySelector('.btn__settings');
-
-function settings () {
-
-buttonSettings.addEventListener('click', (event)=>{
- isSettings = !isSettings;
- if(!isSettings) {
-settingsPopup.classList.remove('show');
-gameLoop = setInterval(moveSnake, SnakeSpeed);
- }
- else {
-  settingsPopup.classList.add('show');
-  clearInterval(gameLoop);
-
- let checkBox = document.querySelector('#cell__checkbox');
- checkBox.addEventListener('change', (event)=>{
-  console.log(checkBox);
-  if (event.target.checked) {
-    for (let i = 0; i < cells.length; i++) {
-      cells[i].style.border = '1px solid rgba(3, 3, 3, 0.2)';
-    }
-  }
-  else {
-    for (let i = 0; i < cells.length; i++) {
-      cells[i].style.border = 'none';
-          }
-        }
-      });
-    
-      setInterval(()=>{
-        for (let i = 0; i < cells.length; i++) {
-          cells[i].classList.remove("food");
-      }
-      generateFood();
-      }, 10000);
- 
-
-      }
-    });
-  let buttonDifficulty = document.querySelector('.btn__difficulty');
-  let lableDifficulty = document.querySelector('.lable__difficulty');
-  buttonDifficulty.addEventListener('click', (event) =>{
-    difficulty = !difficulty;
-
-    if(!difficulty){
-      lableDifficulty.innerText = 'Normal'; 
-      lableDifficulty.style.color = '#000'; 
-    }
-    else {
-      lableDifficulty.innerText = 'Hard'; 
-      lableDifficulty.style.color = '#f00';
-
-      SnakeSpeed - 100;
+function settings() {
+  buttonSettings.addEventListener('click', (event) => {
+    isSettings = !isSettings;
+    console.log(difficulty);
+    if (isSettings) {
       clearInterval(gameLoop);
+      settingsPopup.classList.add('show');
+    } else if (!isSettings) {
+      isPaused = true;
+      pausedText = 'Resume';
+      clearInterval(gameLoop);
+      pausePopup.classList.add('show');
+      pausedTextItem.innerText = pausedText;
+      settingsPopup.classList.remove('show');
+    } else if (!isSettings && !isPaused) {
       gameLoop = setInterval(moveSnake, SnakeSpeed);
     }
   });
-}
-settings ();
+  let buttonDifficulty = document.querySelector('.btn__difficulty');
+  let lableDifficulty = document.querySelector('.lable__difficulty');
+  let foodIntervalId; // Added declaration of foodIntervalId
 
+  buttonDifficulty.addEventListener('click', () => {
+    difficulty = !difficulty;
+    if (!difficulty) {
+      lableDifficulty.innerText = 'Normal';
+      lableDifficulty.style.color = '#000';
+      SnakeSpeed += 100;
+      clearInterval(foodIntervalId);
+      clearInterval(gameLoop);
+    } 
+    else if (difficulty) {
+      lableDifficulty.innerText = 'Hard';
+      lableDifficulty.style.color = '#f00';
+      SnakeSpeed -= 100;
+      clearInterval(gameLoop);
+      if (foodIntervalId) {
+        clearInterval(foodIntervalId);
+      }
+      foodIntervalId = setInterval(() => {
+        for (let i = 0; i < cells.length; i++) {
+          cells[i].classList.remove('food');
+        }
+        generateFood();
+      }, 10000);
+    }
+  });
+  let checkBox = document.querySelector('#cell__checkbox');
+checkBox.addEventListener('change', (event)=>{
+console.log(checkBox);
+if (event.target.checked) {
+  for (let i = 0; i < cells.length; i++) {
+    cells[i].style.border = '1px solid rgba(3, 3, 3, 0.2)';
+  }
+}
+else {
+  for (let i = 0; i < cells.length; i++) {
+    cells[i].style.border = 'none';
+        }
+      }
+    });
+  }
+settings();
 }
 function generateFood() {
   let emptyCells = [];
@@ -283,9 +273,6 @@ function generateFood() {
         emptyCells.push(i);
       }
   }
-
-
-
   // Выбираем случайную пустую ячейку
   let randomIndex = Math.floor(Math.random() * emptyCells.length);
   let foodTileIndex = emptyCells[randomIndex];
@@ -293,7 +280,6 @@ function generateFood() {
  let food_Y = Math.floor(foodTileIndex / boardSize);
 
   food = { x: food_X, y: food_Y };
-
   // Отображаем еду на игровом поле
  cells[foodTileIndex].classList.add("food");
 } 
@@ -303,7 +289,6 @@ btnStart.addEventListener('click', (event) => {
   if (!isButtonClicked) {
     isButtonClicked = true;
     countdown.style.display = 'flex';
-
     const countdownInterval = setInterval(() => {
       counterText.innerText = countdownCounter-1;
       countdownCounter--;
@@ -316,5 +301,3 @@ btnStart.addEventListener('click', (event) => {
     }, 1000);
   }
 });
-
-

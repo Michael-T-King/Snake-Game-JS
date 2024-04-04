@@ -6,7 +6,7 @@
 
 body {
     background-color: #444;
-   /* overflow: hidden;*/
+    overflow: hidden;
 }
 
 .container {
@@ -22,7 +22,7 @@ justify-content: center;
     display: flex;
     position: relative;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     gap: 50px;
  width: 200px;
  height: 800px;
@@ -58,7 +58,6 @@ h1 {
     color: blanchedalmond;
     font-size: 48px;
  margin-bottom: 30px;
- margin-top: 150px;
  text-align: end;
  margin-right: 720px;
 }
@@ -70,8 +69,8 @@ h1 {
 .field {
     display: flex;
 position: relative;
-width: 800px;
-height: 800px;
+width: 600px;
+height: 600px;
 background-color: blanchedalmond;
 /*border: 10px solid #6c4e2c;*/
 flex-wrap: wrap;
