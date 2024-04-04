@@ -123,9 +123,11 @@ pause();
   }
 
   for (let i = 0; i < snake.length; i++) {
+    setTimeout(()=>{
     if (x === snake[i].x && y === snake[i].y) {
       return true; // Столкновение с самой змейкой
     }
+  },40);
   }
 
   return false;
@@ -184,34 +186,38 @@ function moveSnake() {
 }
 
    // Обработка нажатия клавиш
-  document.addEventListener('keydown',(event)=>{
+  let isChangingDirection = false;
+  
+  document.addEventListener('keydown', (event) => {
     const key = event.key;
-
-    if (key === "ArrowUp" && direction !== "down") {
-      setTimeout(()=>{
-        direction = "up";
-      },40);
-
-  } else if (key === "ArrowDown" && direction !== "up") {
-    setTimeout(()=>{
-      direction = "down";
-    },40);
-  } else if (key === "ArrowLeft" && direction !== "right") {
-    setTimeout(()=>{
-      direction = "left";
-    },40);
-  } else if (key === "ArrowRight" && direction !== "left") {
-    setTimeout(()=>{
-      direction = "right";
-    },40);
+  
+    if (!isChangingDirection) {
+      isChangingDirection = true;
+  
+      if (key === "ArrowUp" && direction !== "down") {
+        changeDirectionWithDelay("up");
+      } else if (key === "ArrowDown" && direction !== "up") {
+        changeDirectionWithDelay("down");
+      } else if (key === "ArrowLeft" && direction !== "right") {
+        changeDirectionWithDelay("left");
+      } else if (key === "ArrowRight" && direction !== "left") {
+        changeDirectionWithDelay("right");
+      }
+    }
+  });
+  
+  function changeDirectionWithDelay(newDirection) {
+    direction = newDirection;
+  
+    setInterval(() => {
+      isChangingDirection = false;
+    }, 40);
   }
-});
 let settingsPopup = document.querySelector('.settings__popup');
 let buttonSettings = document.querySelector('.btn__settings');
 
 function settings () {
 
-  if (isButtonClicked || !isButtonClicked){
 buttonSettings.addEventListener('click', (event)=>{
  isSettings = !isSettings;
  if(!isSettings) {
@@ -237,6 +243,14 @@ gameLoop = setInterval(moveSnake, SnakeSpeed);
         }
       });
     
+      setInterval(()=>{
+        for (let i = 0; i < cells.length; i++) {
+          cells[i].classList.remove("food");
+      }
+      generateFood();
+      }, 10000);
+ 
+
       }
     });
   let buttonDifficulty = document.querySelector('.btn__difficulty');
@@ -257,9 +271,6 @@ gameLoop = setInterval(moveSnake, SnakeSpeed);
       gameLoop = setInterval(moveSnake, SnakeSpeed);
     }
   });
-
-
-  }
 }
 settings ();
 
