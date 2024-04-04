@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Snake Game</title>
+</head>
+<body>
+    <h1>your score is: <span class="score">0</span></h1>
+   <div class="container">   
+<aside class="aside__btn">
+        <button class="btn btn__start">Start</button>
+        <button class="btn btn__pause"><p class="paused__text">Pause</p></button>
+        <button class="btn btn__restart"> Restart</button>
+        <button class="btn btn__settings"> Settings</button>
+</aside>
+<h2 class="countdown"><span class="counter__text">3</span></h2>
+    <div class="field">
+        <div class="pause__popup">
+            <h2 class="pause__popup-title">Paused</h2>
+        </div>
+        <div class="settings__popup">
+            <label for="btn__difficulty-text" class="lable__difficulty">normal</label>
+            <button class="btn__difficulty"><span class="btn__difficulty-text">difficulty</span></button>
+            <div class="checkbox__container">
+                <input type="checkbox" id="cell__checkbox">
+                <label for="cell__checkbox" class="label__checkbox">Show cells</label>
+            </div>
+        </div>
+    </div>
+
+   
+  </div> 
+
+    <script src="app.js"></script>
+</body>
+</html>
