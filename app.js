@@ -14,6 +14,11 @@
   let countdownCounter = 4;
   let timer = 4;
   let difficulty = false;
+  let flag = false;
+  let flagUp = false;
+  let flagDown = false;
+  let flagLeft = false;
+  let flagRight = false;
 
   const gameField = document.querySelector('.field');
   const score = document.querySelector('.score');
@@ -135,44 +140,54 @@ function moveSnake() {
   } else if (direction === "right") {
     newHead_X++;
   }
+
+  // Создаем новый объект с координатами новой головы
+  const newHead = { x: newHead_X, y: newHead_Y };
+
   // Проверяем столкновение змейки с границей поля или самой собой
   if (checkCollision(newHead_X, newHead_Y)) {
     clearInterval(gameLoop);
     alert("Game Over!                " + "Your score is: " + counter);
     return;
   }
+
   // Проверяем, попала ли змейка на еду
   if (newHead_X === food.x && newHead_Y === food.y) {
     // Увеличиваем длину змейки
     counter++;
     if (counter % 10 === 0 && counter !== 0) {
-      SnakeSpeed = SnakeSpeed -30;
-      if(SnakeSpeed < 40) SnakeSpeed = 40;
+      SnakeSpeed = SnakeSpeed - 30;
+      if (SnakeSpeed < 40) SnakeSpeed = 40;
       clearInterval(gameLoop);
       gameLoop = setInterval(moveSnake, SnakeSpeed);
     }
+
     score.textContent = counter;
 
-    snake.unshift({ x: newHead_X, y: newHead_Y });
+    // Добавляем новую голову в начало змейки
+    snake.unshift(newHead);
+
     if (food) {
       const foodIndex = food.y * boardSize + food.x;
       cells[foodIndex].classList.remove("food");
-    /* snake.unshift({ x: newHead_X, y: newHead_Y });*/
     }
+
     // Генерируем новую еду
     generateFood();
-    drawSnake();
   } else {
-    // Перемещаем змейку
-    snake.unshift({ x: newHead_X, y: newHead_Y });
+    // Удаляем хвост змейки и добавляем новую голову
     snake.pop();
+    snake.unshift(newHead);
   }
+
+  // Отрисовываем змейку
   drawSnake();
 }
    // Обработка нажатия клавиш
   let isChangingDirection = false;
   
   document.addEventListener('keydown', (event) => {
+    setTimeout(()=>{
     const key = event.key;
   
     if (!isChangingDirection) {
@@ -180,32 +195,50 @@ function moveSnake() {
   
       if (key === "ArrowUp" && direction !== "down") {
         changeDirectionWithDelay("up");
-      } else if (key === "ArrowDown" && direction !== "up") {
+
+      } 
+      else if (key === "ArrowDown" && direction !== "up" ) {
         changeDirectionWithDelay("down");
-      } else if (key === "ArrowLeft" && direction !== "right") {
+
+      } 
+      else if (key === "ArrowLeft" && direction !== "right" ) {
         changeDirectionWithDelay("left");
-      } else if (key === "ArrowRight" && direction !== "left") {
+
+      } 
+      else if (key === "ArrowRight" && direction !== "left" ) {
         changeDirectionWithDelay("right");
+
+      }
+      else {
+        direction = direction;
+        isChangingDirection = false;
       }
     }
+  },SnakeSpeed/2);
   });
 
   const touchBtns = document.querySelectorAll('.arrow__btn');
 touchBtns.forEach((el) => {
   el.addEventListener('click', (event) => {
     const classList = event.currentTarget.classList;
-
     if (!isChangingDirection) {
       isChangingDirection = true;
-
+     
       if (classList.contains("up") && direction !== "down") {
         changeDirectionWithDelay("up");
-      } else if (classList.contains("down") && direction !== "up") {
+      } 
+      else if (classList.contains("down") && direction !== "up" ) {
         changeDirectionWithDelay("down");
-      } else if (classList.contains("left") && direction !== "right") {
+      } 
+      else if (classList.contains("left") && direction !== "right" ) {
         changeDirectionWithDelay("left");
-      } else if (classList.contains("right") && direction !== "left") {
+      } 
+      else if (classList.contains("right") && direction !== "left") {
         changeDirectionWithDelay("right");
+      }
+      else {
+        direction = direction;
+        isChangingDirection = false;
       }
     }
   });
@@ -213,10 +246,9 @@ touchBtns.forEach((el) => {
   
   function changeDirectionWithDelay(newDirection) {
     direction = newDirection;
-  
-    setInterval(() => {
+    setTimeout(() => {
       isChangingDirection = false;
-    }, 40);
+    }, SnakeSpeed/3);
   }
 let settingsPopup = document.querySelector('.settings__popup');
 let buttonSettings = document.querySelector('.btn__settings');
@@ -240,7 +272,7 @@ function settings() {
   });
   let buttonDifficulty = document.querySelector('.btn__difficulty');
   let lableDifficulty = document.querySelector('.lable__difficulty');
-  let foodIntervalId; // Added declaration of foodIntervalId
+  let foodIntervalId; 
 
   buttonDifficulty.addEventListener('click', () => {
     difficulty = !difficulty;
