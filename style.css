@@ -224,7 +224,7 @@ font-family: Algerian, serif;
     justify-content: center;
 }
 
-@media(hover: none){
+@media(pointer: coarse){
     .container__control-btns {
         display: flex;
   }
