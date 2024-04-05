@@ -189,6 +189,27 @@ function moveSnake() {
       }
     }
   });
+
+  const touchBtns = document.querySelectorAll('.arrow__btn');
+touchBtns.forEach((el) => {
+  el.addEventListener('click', (event) => {
+    const classList = event.currentTarget.classList;
+
+    if (!isChangingDirection) {
+      isChangingDirection = true;
+
+      if (classList.contains("up") && direction !== "down") {
+        changeDirectionWithDelay("up");
+      } else if (classList.contains("down") && direction !== "up") {
+        changeDirectionWithDelay("down");
+      } else if (classList.contains("left") && direction !== "right") {
+        changeDirectionWithDelay("left");
+      } else if (classList.contains("right") && direction !== "left") {
+        changeDirectionWithDelay("right");
+      }
+    }
+  });
+});
   
   function changeDirectionWithDelay(newDirection) {
     direction = newDirection;

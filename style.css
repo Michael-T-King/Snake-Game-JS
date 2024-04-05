@@ -5,6 +5,7 @@
 }
 
 body {
+    forced-color-adjust: none;
     background-color: #444;
     overflow: hidden;
 }
@@ -13,6 +14,7 @@ body {
     width: 1200px;
     height: 100%;
     display: flex;
+    flex-wrap: wrap;
     position: relative;
     margin: 0 auto;
 justify-content: center;
@@ -25,12 +27,13 @@ justify-content: center;
     justify-content: start;
     gap: 50px;
  width: 200px;
- height: 800px;
+ height: 600px;
  margin-right: 30px;
 
 }
 
 .btn{
+    forced-color-adjust: none;
     width: 150px;
     height: 50px;
     font-family: Algerian, serif;
@@ -44,29 +47,34 @@ justify-content: center;
 }
 
 .btn:hover {
+    forced-color-adjust: none;
     background-color: #d1c7ab;
    
 }
 
 .btn:active {
+    forced-color-adjust: none;
   border: 5px solid rgb(40, 62, 40);  
 }
 
 h1 {
+    forced-color-adjust: none;
     position: relative;
     font-family: Algerian, serif;
     color: blanchedalmond;
-    font-size: 48px;
- margin-bottom: 30px;
+    font-size: 28px;
+ margin-bottom: 10px;
  text-align: end;
  margin-right: 720px;
 }
 
 .score {
+    forced-color-adjust: none;
     color: #f00;
 }
 
 .field {
+    forced-color-adjust: none;
     display: flex;
 position: relative;
 width: 600px;
@@ -74,9 +82,11 @@ height: 600px;
 background-color: blanchedalmond;
 /*border: 10px solid #6c4e2c;*/
 flex-wrap: wrap;
+margin-bottom: 20px;
 }
 
 .snake {
+    forced-color-adjust: none;
     width: 20px;
     height: 20px;
     background-color: #264a25;
@@ -85,6 +95,7 @@ flex-wrap: wrap;
 }
 
 .food {
+    forced-color-adjust: none;
     width: 20px;
     height: 20px;
     background-color: #bd3d3d;
@@ -96,6 +107,7 @@ flex-wrap: wrap;
 }
 
 .countdown {
+    forced-color-adjust: none;
     display: none;
     position: absolute;
     font-size: 72px;
@@ -114,6 +126,7 @@ flex-wrap: wrap;
 }
 
 .pause__popup, .settings__popup {
+    forced-color-adjust: none;
     display: flex;
     position: absolute;
     background-color: #eadfc0;
@@ -147,6 +160,7 @@ font-family: Algerian, serif;
 }
 
 .lable__difficulty {
+    forced-color-adjust: none;
     font-family: Algerian, serif;
     font-size: 36px;
     border: 2px double #6c4e2c; 
@@ -177,4 +191,41 @@ font-family: Algerian, serif;
 
 .label__checkbox {
     font-family: Algerian, serif;   
+}
+
+.container__control-btns {
+    display: none;
+    flex-direction: column;
+    position: relative;
+    width: 600px;
+    height: 220px;
+    margin-left: 230px;
+}
+
+.arrow__btn {
+    forced-color-adjust: none;
+    position: relative;
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    background-color: #666;
+    color: white;
+}
+.up {
+    margin-left: 250px;
+    margin-bottom: 20px;    
+}
+
+.other__buttons-control {
+    display: flex;
+    position: relative;
+    gap: 20px;
+    width: 100%;
+    justify-content: center;
+}
+
+@media(hover: none){
+    .container__control-btns {
+        display: flex;
+  }
 }
