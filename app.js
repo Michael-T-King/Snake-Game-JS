@@ -12,7 +12,6 @@
   let isSettings = false;
   let pausedText = 'Pause';
   let countdownCounter = 4;
-  let timer = 4;
   let difficulty = false;
   let flag = false;
   let flagUp = false;
@@ -90,29 +89,44 @@ function pause() {
 }
 pause();
 let Restart = document.querySelector('.btn__restart');
+let countRestartInterval = null;
+
 Restart.addEventListener('click', (event) => {
   event.preventDefault(); // Предотвращение обновления страницы
-counter =0;
-score.textContent = counter;
-clearInterval(gameLoop);
-const countRestart = setInterval(() => {
-  countdown.style.display = 'flex';
-  counterText.innerText = timer-1;
-  timer--;
-  if (timer < 0) {  
-  clearInterval(countRestart);
-  for (let i = 0; i < cells.length; i++) {
-    cells[i].classList.remove("snake");
+  counter = 0;
+  score.textContent = counter;
+  clearInterval(gameLoop);
+
+  if (countRestartInterval) {
+    clearInterval(countRestartInterval);
   }
-  for (let i = 0; i < cells.length; i++) {
-    cells[i].classList.remove("food");
-}
-    generateFood();
-    initGame();
-    countdown.style.display = 'none';
-  }
-}, 1000);
-//pause();
+  let timer = 4;
+  const countRestart = () => {
+    countdown.style.display = 'flex';
+    counterText.innerText = timer-1;
+    timer--;
+
+    if (timer < 0) {
+      clearInterval(countRestartInterval);
+
+      for (let i = 0; i < cells.length; i++) {
+        cells[i].classList.remove("snake");
+      }
+
+      for (let i = 0; i < cells.length; i++) {
+        cells[i].classList.remove("food");
+      }
+
+      clearInterval(gameLoop);
+      gameLoop = setInterval(moveSnake, SnakeSpeed);
+      generateFood();
+      initGame();
+      pause();
+      countdown.style.display = 'none';
+    }
+  };
+
+  countRestartInterval = setInterval(countRestart, 1000);
 });
  // Проверка столкновения с границей поля или самой змейкой
  function checkCollision(x, y) {
@@ -223,7 +237,7 @@ touchBtns.forEach((el) => {
     const classList = event.currentTarget.classList;
     if (!isChangingDirection) {
       isChangingDirection = true;
-     
+    
       if (classList.contains("up") && direction !== "down") {
         changeDirectionWithDelay("up");
       } 
